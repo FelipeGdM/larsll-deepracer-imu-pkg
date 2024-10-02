@@ -1,5 +1,5 @@
-I2C_BUS_ID = 1
-BMI160_ADDR = 0x68
+I2C_BUS_ID = 7 # Orin NX default I2C bus
+BMI160_ADDR = 0x69
 
 IMU_MSG_TOPIC = "data_raw"
 ODOM_MSG_TOPIC = "odom_zero"
