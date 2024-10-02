@@ -1,3 +1,11 @@
+## Fork notes
+
+As the time of writing, it's needed to install BMI160-i2c from [this](https://github.com/larsll/BMI160-i2c/tree/master) repo, from the `def-update` branch
+
+The node calibrates the IMU every time it's initialized. It isn't a good idea to do it in run time, so it's interesting that we separete the run-time parts from the lab-time parts
+
+---
+
 # AWS DeepRacer Inertial Measurement Unit
 
 ## Overview
