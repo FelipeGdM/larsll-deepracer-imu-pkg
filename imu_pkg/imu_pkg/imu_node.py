@@ -120,7 +120,7 @@ class IMUNode(Node):
 
             self.sensor.autoCalibrateXAccelOffset(0)
             self.sensor.autoCalibrateYAccelOffset(0)
-            self.sensor.autoCalibrateZAccelOffset(-1)
+            self.sensor.autoCalibrateZAccelOffset(1)
 
             # Enable standing still check
             if self._zero_motion:
@@ -190,11 +190,9 @@ class IMUNode(Node):
 
             # fetch all gyro values - return in rad / sec
             gyro = Vector3()
-            # swap x and y
-            gyro.x = ((data[1] / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            gyro.x = ((data[0] / constants.CONVERSION_MASK_16BIT_FLOAT) *
                       self.sensor.gyro_range * (math.pi / 180))
-            # swap x and y
-            gyro.y = ((data[0] / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            gyro.y = ((data[1] / constants.CONVERSION_MASK_16BIT_FLOAT) *
                       self.sensor.gyro_range * (math.pi / 180))
             # upside-down
             gyro.z = ((data[2] / constants.CONVERSION_MASK_16BIT_FLOAT) *
@@ -202,11 +200,9 @@ class IMUNode(Node):
 
             # fetch all accel values - return in m/s²
             accel = Vector3()
-            # swap x and y
-            accel.x = (data[4] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            accel.x = (data[3] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
                        self.sensor.accel_range)
-            # swap x and y
-            accel.y = (data[3] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            accel.y = (data[4] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
                        self.sensor.accel_range)
             # upside-down
             accel.z = (data[5] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
