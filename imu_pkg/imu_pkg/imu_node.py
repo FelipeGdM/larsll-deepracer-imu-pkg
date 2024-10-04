@@ -61,11 +61,14 @@ class IMUNode(Node):
                                ParameterDescriptor(type=ParameterType.PARAMETER_INTEGER))
         self.declare_parameter('zero_motion_odometer', False,
                                ParameterDescriptor(type=ParameterType.PARAMETER_BOOL))
+        self.declare_parameter('calibrate', False,
+                               ParameterDescriptor(type=ParameterType.PARAMETER_BOOL))
 
         self._bus_id = self.get_parameter('bus_id').value
         self._address = self.get_parameter('address').value
         self._publish_rate = self.get_parameter('publish_rate').value
         self._zero_motion = self.get_parameter('zero_motion_odometer').value
+        self._calibrate = self.get_parameter('calibrate').value
 
         self.get_logger().info("Connecting to IMU at bus {} address {}".format(self._bus_id, self._address))
 
@@ -114,13 +117,14 @@ class IMUNode(Node):
             self.sensor.setFullScaleAccelRange(definitions.ACCEL_RANGE_4G, constants.ACCEL_RANGE_4G_FLOAT)
             self.sensor.setFullScaleGyroRange(definitions.GYRO_RANGE_250, constants.GYRO_RANGE_250_FLOAT)
 
-            # Calibrating Accelerometer - assuming that it stands on 'flat ground'.
-            # Gravity points downwards, hence Z should be calibrated to -1.
-            self.sensor.setAccelOffsetEnabled(True)
+            if self._calibrate:
+                # Calibrating Accelerometer - assuming that it stands on 'flat ground'.
+                # Gravity points downwards, hence Z should be calibrated to -1.
+                self.sensor.setAccelOffsetEnabled(True)
 
-            self.sensor.autoCalibrateXAccelOffset(0)
-            self.sensor.autoCalibrateYAccelOffset(0)
-            self.sensor.autoCalibrateZAccelOffset(1)
+                self.sensor.autoCalibrateXAccelOffset(0)
+                self.sensor.autoCalibrateYAccelOffset(0)
+                self.sensor.autoCalibrateZAccelOffset(1)
 
             # Enable standing still check
             if self._zero_motion:
