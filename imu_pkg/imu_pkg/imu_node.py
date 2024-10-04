@@ -194,9 +194,11 @@ class IMUNode(Node):
 
             # fetch all gyro values - return in rad / sec
             gyro = Vector3()
-            gyro.x = ((data[0] / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            # swap x and y
+            gyro.x = ((data[1] / constants.CONVERSION_MASK_16BIT_FLOAT) *
                       self.sensor.gyro_range * (math.pi / 180))
-            gyro.y = ((data[1] / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            # swap x and y
+            gyro.y = ((data[0] / constants.CONVERSION_MASK_16BIT_FLOAT) *
                       self.sensor.gyro_range * (math.pi / 180))
             # upside-down
             gyro.z = ((data[2] / constants.CONVERSION_MASK_16BIT_FLOAT) *
@@ -204,9 +206,11 @@ class IMUNode(Node):
 
             # fetch all accel values - return in m/s²
             accel = Vector3()
-            accel.x = (data[3] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            # swap x and y
+            accel.x = (data[4] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
                        self.sensor.accel_range)
-            accel.y = (data[4] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
+            # swap x and y
+            accel.y = (data[3] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
                        self.sensor.accel_range)
             # upside-down
             accel.z = (data[5] * (constants.GRAVITY_CONSTANT / constants.CONVERSION_MASK_16BIT_FLOAT) *
